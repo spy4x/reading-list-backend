@@ -1,0 +1,10 @@
+.DS_Store
+node_modules
+.idea
+build
+npm-debug.log
+coverage
+.nvmrc
+logs
+yarn.lock
+src/config/secrets.config.ts

@@ -1,0 +1,10 @@
+{
+  "name": "reading-list-backend",
+  "script": "build/index.js",
+  "instances": 0,
+  "exec_mode": "cluster",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": 9000
+  }
+}
