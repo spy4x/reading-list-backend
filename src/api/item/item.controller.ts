@@ -64,6 +64,10 @@ export class ItemController {
           item.tags = req.body.tags;
         }
 
+        if (req.body.viewedAt) {
+          item.viewedAt = req.body.viewedAt;
+        }
+
         item
           .save()
           .then(savedItem => {

@@ -231,6 +231,7 @@ describe('/items', () => {
           SeedTags.tags.normalArchery._id.toString(),
           SeedTags.tags.normalNotInAnItem._id.toString()
         ];
+        const newDate = new Date().toISOString();
         request(TestApplication.app)
           .put(`/items/${SeedItems.items.oneTag._id.toString()}`)
           .send({
@@ -238,7 +239,7 @@ describe('/items', () => {
             title: newTitle,
             priority: newPriority,
             tags: newTags,
-            viewedAt: new Date()
+            viewedAt: newDate
           })
           .set('Authorization', 'Bearer ' + SeedUsers.tokens.normal)
           .expect(200)
@@ -250,6 +251,7 @@ describe('/items', () => {
             expect(res.body.url).to.be.eq(newUrl);
             expect(res.body.title).to.be.eq(newTitle);
             expect(res.body.priority).to.be.eq(newPriority);
+            expect(res.body.viewedAt).to.be.eq(newDate);
             expect(res.body.tags.length).to.be.deep.eq(newTags.length);
             expect(res.body.tags[0]).to.be.eq(
               newTags[0], 'first tag to be equal');
