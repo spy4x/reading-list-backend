@@ -48,25 +48,15 @@ export class ItemController {
           return HTTPHelper.handle404(req, res, `No item ${req.params.id}`);
         }
 
-        if (req.body.url) {
-          item.url = req.body.url;
-        }
+        const allowedToEditFields = {
+          url: req.body.url,
+          title: req.body.title,
+          priority: req.body.priority,
+          tags: req.body.tags,
+          viewedAt: req.body.viewedAt
+        };
 
-        if (req.body.title) {
-          item.title = req.body.title;
-        }
-
-        if (req.body.priority) {
-          item.priority = req.body.priority;
-        }
-
-        if (req.body.tags) {
-          item.tags = req.body.tags;
-        }
-
-        if (req.body.viewedAt) {
-          item.viewedAt = req.body.viewedAt;
-        }
+        Object.assign(item, allowedToEditFields);
 
         item
           .save()

@@ -304,46 +304,27 @@ describe('/items', () => {
           });
       });
 
-    it('should return 200 and even with missing fields',
+    it('should return 400 if fields are missing',
       function (done) {
         request(TestApplication.app)
           .put(`/items/${SeedItems.items.twoTags._id.toString()}`)
           .send({})
           .set('Authorization', 'Bearer ' + SeedUsers.tokens.normal)
-          .expect(200)
+          .expect(400)
           .end((error: Error, res: any) => {
             expect(error).to.not.exist;
 
-            expect(res.body._id).to.be.eq(
-              SeedItems.items.twoTags._id.toString());
-            expect(res.body.url).to.be.eq(SeedItems.items.twoTags.url);
-            expect(res.body.title).to.be.eq(SeedItems.items.twoTags.title);
-            expect(res.body.priority).to.be.eq(
-              SeedItems.items.twoTags.priority);
-            expect(res.body.tags.length).to.be.deep.eq(
-              SeedItems.items.twoTags.tags.length);
-            expect(res.body.owner).to.be.eq(
-              SeedUsers.users.normal._id.toString());
+            expect(res.body.name).to.be.eq(ErrorHelper.Type.Validation);
+            expect(res.body.errors.url.kind).to.be.eq(
+              'required', 'url required');
+            expect(res.body.errors.title.kind).to.be.eq(
+              'required', 'title required');
+            expect(res.body.errors.priority.kind).to.be.eq(
+              'required', 'priority required');
+            expect(res.body.errors.tags).to.not.exist;
+            expect(res.body.errors.owner).to.not.exist;
 
-            ItemModel
-              .findOne({_id: res.body._id})
-              .then(item => {
-                if (!item) {
-                  return done(new Error('No item found'));
-                }
-
-                expect(item.url).to.be.eq(SeedItems.items.twoTags.url);
-                expect(item.title).to.be.eq(SeedItems.items.twoTags.title);
-                expect(item.priority).to.be.eq(
-                  SeedItems.items.twoTags.priority);
-                expect(item.tags.length).to.be.deep.eq(
-                  SeedItems.items.twoTags.tags.length);
-                expect(item.owner.toString()).to.be.eq(
-                  SeedUsers.users.normal._id.toString());
-
-                done();
-              })
-              .catch(done);
+            done();
           });
       });
 
