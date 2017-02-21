@@ -46,9 +46,11 @@ export class TagController {
           return HTTPHelper.handle404(req, res, `No tag ${req.params.id}`);
         }
 
-        if (req.body.name) {
-          tag.name = req.body.name;
-        }
+        const allowedToEditFields = {
+          name: req.body.name
+        };
+
+        Object.assign(tag, allowedToEditFields);
 
         tag
           .save()

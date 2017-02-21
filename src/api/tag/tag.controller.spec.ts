@@ -237,33 +237,22 @@ describe('/tags', () => {
           });
       });
 
-    it('should return 200 and even with missing "name" field',
+    it('should return 400 if "name" field is missing',
       function (done) {
         request(TestApplication.app)
           .put(`/tags/${SeedTags.tags.normalArchery._id.toString()}`)
+          .send({})
           .set('Authorization', 'Bearer ' + SeedUsers.tokens.normal)
-          .expect(200)
+          .expect(400)
           .end((error: Error, res: any) => {
             expect(error).to.not.exist;
 
-            expect(res.body._id).to.be.eq(
-              SeedTags.tags.normalArchery._id.toString());
-            expect(res.body.name).to.be.eq(SeedTags.tags.normalArchery.name);
-            expect(res.body.owner).to.be.eq(
-              SeedUsers.users.normal._id.toString());
+            expect(res.body.name).to.be.eq(ErrorHelper.Type.Validation);
+            expect(res.body.errors.name.kind).to.be.eq(
+              'required', 'name required');
+            expect(res.body.errors.owner).to.not.exist;
 
-            TagModel
-              .findOne({_id: res.body._id})
-              .then(tag => {
-                if (!tag) {
-                  return done(new Error('No tag found'));
-                }
-                expect(tag.name).to.be.eq(SeedTags.tags.normalArchery.name);
-                expect(tag.owner.toString()).to.be.eq(
-                  SeedUsers.users.normal._id.toString());
-                done();
-              })
-              .catch(done);
+            done();
           });
       });
 
