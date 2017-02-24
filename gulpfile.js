@@ -14,6 +14,9 @@ const compiledTestsPath = 'build/**/*.spec.js';
 gulp.task('default', ['scripts'], runNodemonAndWatch);
 gulp.task('compile-typescript', runTSCompiler);
 gulp.task('scripts', ['compile-typescript']);
+gulp.task('generate-secrets', ['compile-typescript'], () => {
+  require('./build/generateSecrets');
+});
 
 gulp.task('test', ['scripts'], getTestsTaskBodyForWatch);
 gulp.task('test:validate', ['scripts'], getTestsTaskBodyForValidation);
@@ -31,7 +34,10 @@ gulp.task('watch', ['lint', 'test'], () => {
 
 gulp.task('pre-commit', ['build-and-validate']);
 
+
 /// Implementation below ///
+
+const mochaTimeout = process.env.RL_MOCHA_TIMEOUT || 200;
 
 function runTSCompiler () {
   const tsProject = ts.createProject('tsconfig.json');
@@ -74,7 +80,7 @@ function getTestsTaskBodyForWatch () {
   return gulp
     .src(compiledTestsPath, {read: false})
     .pipe(spawnMocha({
-      timeout: 200,
+      timeout: mochaTimeout,
       R: 'progress',
       env: {'NODE_ENV': 'test'}
     }));
@@ -88,7 +94,7 @@ function getTestsTaskBodyForValidation () {
     .pipe(mocha({
       reporter: 'spec',
       ui: 'bdd',
-      timeout: 200
+      timeout: mochaTimeout
     }))
     .once('error', () => {
       process.exit(-1);

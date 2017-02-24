@@ -21,6 +21,7 @@ export class App {
   public app: express.Application;
 
   constructor () {
+    Logger.warn('Start server with config:', {config});
     ErrorHelper.init();
     this.app = express();
     this.initMongoose();

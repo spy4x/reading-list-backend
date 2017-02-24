@@ -4,6 +4,8 @@ import { Logger } from '../../services/logger.service';
 import { developmentConfig } from './development.config';
 import { productionConfig } from './production.config';
 import { testConfig } from './test.config';
+const secrets = require('../secrets');
+
 
 export type EnvironmentString = 'development' | 'test' | 'production';
 
@@ -12,29 +14,32 @@ export const Environments = {
   Test: 'test' as EnvironmentString,
   Production: 'production' as EnvironmentString
 };
-let env: EnvironmentString;
-switch (process.env.NODE_ENV) {
+
+let nodeEnv: EnvironmentString;
+const env = process.env;
+switch (env.NODE_ENV) {
   case Environments.Development:
-    env = Environments.Development;
+    nodeEnv = Environments.Development;
     break;
   case Environments.Test:
-    env = Environments.Test;
+    nodeEnv = Environments.Test;
     break;
   case Environments.Production:
-    env = Environments.Production;
+    nodeEnv = Environments.Production;
     break;
   default:
     Logger.fatal(`NODE_ENV should be "development" OR "test" OR "production".
-    It is "${process.env.NODE_ENV}".
+    It is "${env.NODE_ENV}".
     Terminating app.`);
     process.exit(-1);
-    env = Environments.Development; // TypeSafety hack
+    nodeEnv = Environments.Development; // TypeSafety hack
 }
+
 const configVar: any = {
-  env: env,
+  env: nodeEnv,
   root: path.normalize(__dirname + '/../../..'), // Root path of server
-  port: process.env.PORT || 9000,
-  ip: process.env.IP || 'localhost',
+  port: env.PORT || 9000,
+  ip: env.IP || 'localhost',
   mongo: {
     options: {
       db: {
@@ -72,5 +77,51 @@ switch (configVar.env) {
     throw new Error(`Environment ${configVar.env} is not supported`);
 }
 
-export const config = _.merge(
-  {}, configVar, envConfig, require('../secrets.config.js'));
+const mergedConfig = _.merge({}, configVar, envConfig);
+
+switch (nodeEnv) {
+  case Environments.Development:
+    break;
+  case Environments.Production:
+    mergedConfig.mongo.uri =
+      env.RL_MONGO_URI_PRODUCTION ||
+      secrets.mongo.uri.production ||
+      mergedConfig.mongo.uri;
+    break;
+  case Environments.Test:
+    mergedConfig.mongo.uri =
+      env.RL_MONGO_URI_TEST ||
+      secrets.mongo.uri.test ||
+      mergedConfig.mongo.uri;
+    break;
+  default:
+    break;
+}
+
+mergedConfig.auth.google.clientID =
+  env.RL_GOOGLE_OAUTH_CLIENTID ||
+  secrets.auth.google.clientID ||
+  mergedConfig.auth.google.clientID;
+
+mergedConfig.auth.google.clientSecret =
+  env.RL_GOOGLE_OAUTH_CLIENTSECRET ||
+  secrets.auth.google.clientSecret ||
+  mergedConfig.auth.google.clientSecret;
+
+mergedConfig.auth.secret =
+  env.RL_AUTH_SECRET ||
+  secrets.auth.secret ||
+  mergedConfig.auth.secret;
+
+mergedConfig.sentryDSN =
+  env.RL_SENTRY_DSN ||
+  secrets.sentryDSN ||
+  mergedConfig.sentryDSN;
+
+mergedConfig.urls.frontend =
+  env.RL_URLS_FRONTEND ||
+  secrets.urls.frontend ||
+  mergedConfig.urls.frontend;
+
+
+export const config = mergedConfig;
