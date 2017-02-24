@@ -1,5 +1,7 @@
 # Backend for Reading List app
 
+[ ![Codeship Status for spy4x/reading-list-backend](https://app.codeship.com/projects/b220ef30-893e-0134-ab3e-424976f5906b/status?branch=master)](https://app.codeship.com/projects/184162)
+
 ## Development
 
 ### Setup environment
