@@ -50,7 +50,7 @@ export class AuthGoogleStrategy implements AuthServiceStrategy {
             };
             return new UserModel(newUser)
               .save()
-              .then(() => done(undefined, newUser))
+              .then(savedUser => done(undefined, savedUser))
               .catch(error => {
                 const message = 'GooglePassport::callback - create user error';
                 Logger.error(message, {error});
@@ -66,7 +66,7 @@ export class AuthGoogleStrategy implements AuthServiceStrategy {
           user.name = profile.displayName;
           user
             .save()
-            .then(() => done(undefined, user))
+            .then(savedUser => done(undefined, savedUser))
             .catch(error => {
               const message = 'GooglePassport::callback - update user error';
               Logger.error(message, {error});
@@ -104,7 +104,6 @@ export class AuthGoogleStrategy implements AuthServiceStrategy {
         }),
         (req: Request, res: Response) => {
           const token = AuthService.genToken(req.user.getPublic());
-          Logger.debug('token', {token});
           res.cookie('token', token);
           res.redirect(config.urls.frontend);
         }
