@@ -6,5 +6,4 @@ npm-debug.log
 coverage
 .nvmrc
 logs
-yarn.lock
 src/config/secrets.json
