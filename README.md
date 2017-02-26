@@ -5,12 +5,27 @@
 ## Development
 
 ### Setup environment
-
-Install node.js and use this commands to install all dependencies:
-
+1. Install Node.js 
+2. Install Angular CLI:
+```bash
+$ yarn global add gulp
 ```
-npm i -g gulp
-npm i
+
+or (alternative)
+ 
+```bash
+$ npm install -g gulp
+```
+
+3. Install dependencies:
+```bash
+$ yarn
+```
+
+or (alternative)
+ 
+```bash
+$ npm install
 ```
 
 ### Usage
@@ -36,11 +51,27 @@ $ gulp build-and-validate
 
 ### Setup environment
 
-Install node.js and use this commands to install all dependencies:
-
+1. Install Node.js 
+2. Install PM2:
 ```bash
-npm i -g pm2
-npm i
+$ yarn global add pm2
+```
+
+or (alternative)
+ 
+```bash
+$ npm install -g pm2
+```
+
+3. Install dependencies:
+```bash
+$ yarn
+```
+
+or (alternative)
+ 
+```bash
+$ npm install
 ```
 
 ### Usage
@@ -51,16 +82,20 @@ To start app:
 $ pm2 start pm2.production.json
 ```
 
+
 ## Contributing
 
 ### Unit tests
 
 All js code should be unit-tested
 
+
 ### Code style
 
 https://github.com/felixge/node-style-guide
+
 https://basarat.gitbooks.io/typescript/content/docs/styleguide/styleguide.html
+
 
 ### Commits & Pull requests
 
