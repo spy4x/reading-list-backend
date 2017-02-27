@@ -25,7 +25,7 @@
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "q": "^1.4.1",
-    "validator": "^6.2.1"
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
@@ -36,11 +36,11 @@
     "@types/mongoose-promise": "^4.5.5",
     "@types/passport": "^0.3.2",
     "@types/q": "0.0.32",
-    "@types/validator": "^5.7.35",
+    "@types/validator": "^6.2.0",
     "chai": "^3.5.0",
     "git-guppy": "^2.0.0",
     "gulp": "^3.9.0",
-    "gulp-mocha": "^3.0.1",
+    "gulp-mocha": "^4.0.1",
     "gulp-nodemon": "^2.0.6",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-spawn-mocha": "^3.1.0",
