@@ -1,10 +1,11 @@
 import * as Mongoose from 'mongoose';
 import isEmail = require('validator/lib/isEmail');
+import { generate } from 'shortid';
 const uniqueValidator = require('mongoose-unique-validator');
 
 
 export interface User {
-  _id?: any;
+  _id?: string;
   name: string;
   email?: string;
   avatarURL?: string;
@@ -17,11 +18,17 @@ export interface User {
 }
 
 export interface UserDBO extends User, Mongoose.Document {
-  _id: any;
+  _id: string;
   getPublic (): any;
 }
 
 const UserSchema = new Mongoose.Schema({
+  _id: {
+    type: String,
+    'default': generate,
+    required: true,
+    unique: true
+  },
   name: {
     type: String,
     trim: true,

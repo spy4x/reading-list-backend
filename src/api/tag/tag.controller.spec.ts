@@ -35,7 +35,7 @@ describe('/tags', () => {
 
             const userTags = SeedTags.pureDataArray
               .filter(tag => {
-                return SeedUsers.users.normal._id.equals(tag.owner);
+                return SeedUsers.users.normal._id === tag.owner;
               });
             const userTagsAmount = userTags.length;
             expect(res.body.length).to.be.eq(userTagsAmount);

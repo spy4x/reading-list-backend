@@ -24,6 +24,9 @@ export class TagController {
       owner: req.user._id,
       createdAt: new Date()
     };
+    if (req.body._id) {
+      newTag._id = req.body._id;
+    }
     new TagModel(newTag)
       .save()
       .then(savedTag => {

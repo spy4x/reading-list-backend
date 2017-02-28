@@ -26,6 +26,9 @@ export class ItemController {
       owner: req.user._id,
       createdAt: new Date()
     };
+    if (req.body._id) {
+      newItem._id = req.body._id;
+    }
     new ItemModel(newItem)
       .save()
       .then(savedItem => {

@@ -1,10 +1,11 @@
 import * as Mongoose from 'mongoose';
+import { generate } from 'shortid';
 import isURL = require('validator/lib/isURL');
 const uniqueValidator = require('mongoose-unique-validator');
 
 
 export interface Item {
-  _id?: any;
+  _id?: string;
   url: string;
   title: string;
   priority: number;
@@ -15,38 +16,42 @@ export interface Item {
 }
 
 export interface ItemDBO extends Item, Mongoose.Document {
-  _id: any;
+  _id: string;
 }
 
-const ItemSchema = new Mongoose.Schema(
-  {
-    url: {
-      type: String,
-      required: true,
-      validate: [isURL, 'Invalid url']
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    priority: {
-      type: Number,
-      required: true,
-      'default': 1
-    },
-    tags: [{
-      type: Mongoose.Schema.Types.ObjectId,
-      ref: 'Tag'
-    }],
-    owner: {
-      type: Mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    viewedAt: Date,
-    createdAt: Date
-  }
-);
+const ItemSchema = new Mongoose.Schema({
+  _id: {
+    type: String,
+    'default': generate,
+    required: true,
+    unique: true
+  },
+  url: {
+    type: String,
+    required: true,
+    validate: [isURL, 'Invalid url']
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  priority: {
+    type: Number,
+    required: true,
+    'default': 1
+  },
+  tags: [{
+    type: String,
+    ref: 'Tag'
+  }],
+  owner: {
+    type: String,
+    ref: 'User',
+    required: true
+  },
+  viewedAt: Date,
+  createdAt: Date
+});
 ItemSchema.index({url: 1, owner: 1}, {unique: true});
 ItemSchema.plugin(uniqueValidator);
 

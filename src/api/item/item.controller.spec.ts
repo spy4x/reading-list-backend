@@ -39,7 +39,7 @@ describe('/items', () => {
 
             const userItems = SeedItems.pureDataArray
               .filter(Item => {
-                return SeedUsers.users.normal._id.equals(Item.owner);
+                return SeedUsers.users.normal._id === Item.owner;
               });
             const userItemsAmount = userItems.length;
             expect(res.body.length).to.be.eq(userItemsAmount);
