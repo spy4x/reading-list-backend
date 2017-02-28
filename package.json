@@ -25,6 +25,7 @@
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "q": "^1.4.1",
+    "shortid": "^2.2.6",
     "validator": "^7.0.0"
   },
   "devDependencies": {
@@ -36,6 +37,7 @@
     "@types/mongoose-promise": "^4.5.5",
     "@types/passport": "^0.3.2",
     "@types/q": "0.0.32",
+    "@types/shortid": "^0.0.28",
     "@types/validator": "^6.2.0",
     "chai": "^3.5.0",
     "git-guppy": "^2.0.0",
