@@ -48,6 +48,8 @@ describe('/items', () => {
             expect(res.body[2]._id).to.be.eq(twoTagsItem._id.toString());
             expect(res.body[2].url).to.be.eq(twoTagsItem.url);
             expect(res.body[2].title).to.be.eq(twoTagsItem.title);
+            expect(res.body[2].imageUrl).to.be.eq(twoTagsItem.imageUrl);
+            expect(res.body[2].description).to.be.eq(twoTagsItem.description);
             expect(res.body[2].priority).to.be.eq(twoTagsItem.priority);
             expect(res.body[2].tags.length).to.be.eq(2, 'tags length to be 2');
             expect(res.body[2].tags[0].toString()).to.be.eq(
@@ -84,6 +86,8 @@ describe('/items', () => {
     const newItem = {
       url: 'http://some-url.com',
       title: 'Some url',
+      imageUrl: 'http://image.com/image2.jpeg',
+      description: 'some desc',
       priority: 2,
       tags: [
         SeedTags.tags.normalCode._id.toString(),
@@ -118,6 +122,8 @@ describe('/items', () => {
             expect(res.body._id).to.exist;
             expect(res.body.url).to.be.eq(newItem.url);
             expect(res.body.title).to.be.eq(newItem.title);
+            expect(res.body.imageUrl).to.be.eq(newItem.imageUrl);
+            expect(res.body.description).to.be.eq(newItem.description);
             expect(res.body.priority).to.be.eq(newItem.priority);
             expect(res.body.tags.length).to.be.eq(2, 'tags length to be 2');
             expect(res.body.tags[0].toString()).to.be.eq(
@@ -135,6 +141,8 @@ describe('/items', () => {
                 }
                 expect(item.url).to.be.eq(newItem.url);
                 expect(item.title).to.be.eq(newItem.title);
+                expect(item.imageUrl).to.be.eq(newItem.imageUrl);
+                expect(item.description).to.be.eq(newItem.description);
                 expect(item.priority).to.be.eq(newItem.priority);
                 expect(item.tags.length).to.be.eq(2, 'tags length to be 2');
                 expect(item.tags[0].toString()).to.be.eq(
@@ -231,12 +239,16 @@ describe('/items', () => {
           SeedTags.tags.normalArchery._id.toString(),
           SeedTags.tags.normalNotInAnItem._id.toString()
         ];
+        const newImageUrl = 'http://image.com/image3.png';
+        const newDescription = 'some new desc';
         const newDate = new Date().toISOString();
         request(TestApplication.app)
           .put(`/items/${SeedItems.items.oneTag._id.toString()}`)
           .send({
             url: newUrl,
             title: newTitle,
+            imageUrl: newImageUrl,
+            description: newDescription,
             priority: newPriority,
             tags: newTags,
             viewedAt: newDate
@@ -250,6 +262,8 @@ describe('/items', () => {
               SeedItems.items.oneTag._id.toString());
             expect(res.body.url).to.be.eq(newUrl);
             expect(res.body.title).to.be.eq(newTitle);
+            expect(res.body.imageUrl).to.be.eq(newImageUrl);
+            expect(res.body.description).to.be.eq(newDescription);
             expect(res.body.priority).to.be.eq(newPriority);
             expect(res.body.viewedAt).to.be.eq(newDate);
             expect(res.body.tags.length).to.be.deep.eq(newTags.length);
@@ -268,6 +282,8 @@ describe('/items', () => {
                 }
                 expect(item.url).to.be.eq(newUrl);
                 expect(item.title).to.be.eq(newTitle);
+                expect(item.imageUrl).to.be.eq(newImageUrl);
+                expect(item.description).to.be.eq(newDescription);
                 expect(item.priority).to.be.eq(newPriority);
                 expect(item.tags.length).to.be.deep.eq(newTags.length);
                 expect(item.tags[0].toString()).to.be.eq(

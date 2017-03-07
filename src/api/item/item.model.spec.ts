@@ -19,6 +19,10 @@ describe('Item.model', () => {
           SeedItems.items.twoTags.url, 'url to be equal');
         expect(item.title).to.be.eq(
           SeedItems.items.twoTags.title, 'title to be equal');
+        expect(item.imageUrl).to.be.eq(
+          SeedItems.items.twoTags.imageUrl, 'imageUrl to be equal');
+        expect(item.description).to.be.eq(
+          SeedItems.items.twoTags.description, 'description to be equal');
         expect(item.priority).to.be.eq(
           SeedItems.items.twoTags.priority, 'priority to be equal');
         expect(item.owner.toString()).to.be.eq(
@@ -45,6 +49,10 @@ describe('Item.model', () => {
             SeedItems.items.twoTags.url, 'url to be equal');
           expect(item.title).to.be.eq(
             SeedItems.items.twoTags.title, 'title to be equal');
+          expect(item.imageUrl).to.be.eq(
+            SeedItems.items.twoTags.imageUrl, 'imageUrl to be equal');
+          expect(item.description).to.be.eq(
+            SeedItems.items.twoTags.description, 'description to be equal');
           expect(item.priority).to.be.eq(
             SeedItems.items.twoTags.priority, 'priority to be equal');
           expect(item.owner.toString()).to.be.eq(
