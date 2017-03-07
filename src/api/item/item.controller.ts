@@ -21,6 +21,8 @@ export class ItemController {
     const newItem: Item = {
       url: req.body.url,
       title: req.body.title,
+      imageUrl: req.body.imageUrl,
+      description: req.body.description,
       priority: req.body.priority,
       tags: req.body.tags,
       owner: req.user._id,
@@ -54,6 +56,8 @@ export class ItemController {
         const allowedToEditFields = {
           url: req.body.url,
           title: req.body.title,
+          imageUrl: req.body.imageUrl,
+          description: req.body.description,
           priority: req.body.priority,
           tags: req.body.tags,
           viewedAt: req.body.viewedAt

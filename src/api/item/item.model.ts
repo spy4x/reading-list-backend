@@ -8,6 +8,8 @@ export interface Item {
   _id?: string;
   url: string;
   title: string;
+  imageUrl: string;
+  description: string;
   priority: number;
   tags: string[];
   owner: string;
@@ -34,6 +36,12 @@ const ItemSchema = new Mongoose.Schema({
   title: {
     type: String,
     required: true
+  },
+  description: {
+    type: String
+  },
+  imageUrl: {
+    type: String
   },
   priority: {
     type: Number,
