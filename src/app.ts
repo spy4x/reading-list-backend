@@ -12,7 +12,7 @@ import { Logger } from './services/logger.service';
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const cors = require('cors');
-// const errorHandler = require('errorhandler');
+const errorHandler = require('errorhandler');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const passport = require('passport');
@@ -28,7 +28,7 @@ export class App {
     this.initMongoose();
     this.initExpress();
     this.initRoutes();
-    // this.initErrorHandler();
+    this.initErrorHandler();
   }
 
   public run (): Q.Promise<{}> {
@@ -49,7 +49,7 @@ export class App {
   }
 
   private initExpress () {
-    // this.app.use(Logger.requestHandler); // Have to be first middleware
+    this.app.use(Logger.requestHandler); // Have to be first middleware
     this.app.use(compression());
     this.app.use(bodyParser.json({limit: '5mb'}));
     this.app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
@@ -63,11 +63,11 @@ export class App {
     }
   }
 
-  // private initErrorHandler () {
-  //   // Have to be last middleware, but before any other error handlers
-  //   this.app.use(Logger.errorHandler);
-  //   this.app.use(errorHandler({log: App.errorNotification}));
-  // }
+  private initErrorHandler () {
+    // Have to be last middleware, but before any other error handlers
+    this.app.use(Logger.errorHandler);
+    this.app.use(errorHandler({log: App.errorNotification}));
+  }
 
   private initRoutes () {
     this.app
@@ -89,11 +89,11 @@ export class App {
     });
   }
 
-  // private static errorNotification (error: Error,
-  //                                   message: string,
-  //                                   req: express.Request) {
-  //   Logger.error(`Error in ${req.method} ${req.url}`, {error, message}, req);
-  // }
+  private static errorNotification (error: Error,
+                                    message: string,
+                                    req: express.Request) {
+    Logger.error(`Error in ${req.method} ${req.url}`, {error, message}, req);
+  }
 
   private static requestLogger (req: express.Request,
                                 res: express.Response,

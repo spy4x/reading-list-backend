@@ -1,13 +1,13 @@
 import { Request } from 'express';
 import * as _ from 'lodash';
 import { User } from '../api/user/user.model';
-// import { config, Environments } from '../config/environment/index';
-// const Raven = require('raven');
+import { config, Environments } from '../config/environment/index';
+const Raven = require('raven');
 
 export class Logger {
 
   static init () {
-    // Raven.config(config.sentryDSN).install();
+    Raven.config(config.sentryDSN).install();
   }
 
   static log (message: string, params?: any, req?: Request) {
@@ -35,26 +35,26 @@ export class Logger {
   }
 
   static setUser (user?: User) {
-    // if (!user) {
-    //   return Raven.setUserContext();
-    // }
-    // Raven.setContext({
-    //   user: {
-    //     id: user._id,
-    //     username: user.name,
-    //     email: user.email
-    //   }
-    // });
+    if (!user) {
+      return Raven.setContext({user: undefined});
+    }
+    Raven.setContext({
+      user: {
+        id: user._id,
+        username: user.name,
+        email: user.email
+      }
+    });
   }
 
   /** Ensures asynchronous exceptions are routed to the errorHandler.
    * This should be the **first** item listed in middleware.
    */
-  // static requestHandler = Raven.requestHandler();
+  static requestHandler = Raven.requestHandler();
   /** Error handler. This should be the last item listed in middleware,
    * but before any other error handlers.
    */
-  // static errorHandler = Raven.errorHandler();
+  static errorHandler = Raven.errorHandler();
 
   private static captureMessage (level: string,
                                  message: string,
@@ -71,15 +71,15 @@ export class Logger {
       params.endpoint = `${req.method} ${req.originalUrl}`;
       params.params = req.params;
       params.body = req.body;
-      // Logger.setUser(req.user);
+      Logger.setUser(req.user);
     }
-    // if (config.env === Environments.Production &&
-    //   _.includes(['warning', 'error', 'fatal'], level)) {
-    //   Raven.captureMessage(message, {
-    //     extra: params,
-    //     level: level
-    //   });
-    // }
+    if (config.env === Environments.Production &&
+      _.includes(['warning', 'error', 'fatal'], level)) {
+      Raven.captureMessage(message, {
+        extra: params,
+        level: level
+      });
+    }
 
     params = _.omitBy(params, _.isUndefined);
 
