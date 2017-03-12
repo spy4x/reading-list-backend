@@ -81,6 +81,7 @@ export class AuthService {
           message: 'User is blocked'
         });
       }
+      Logger.setUser(req.user);
 
       user.lastLoggedIn = new Date();
       user
