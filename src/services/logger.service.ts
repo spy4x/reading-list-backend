@@ -1,7 +1,15 @@
 import { Request } from 'express';
 import * as _ from 'lodash';
+import { User } from '../api/user/user.model';
+import { config, Environments } from '../config/environment/index';
+const Raven = require('raven');
 
 export class Logger {
+
+  static init () {
+    Raven.config(config.sentryDSN).install();
+  }
+
   static log (message: string, params?: any, req?: Request) {
     Logger.captureMessage('log', message, params, req);
   }
@@ -26,6 +34,28 @@ export class Logger {
     Logger.captureMessage('fatal', message, params, req);
   }
 
+  static setUser (user?: User) {
+    if (!user) {
+      return Raven.setContext({user: undefined});
+    }
+    Raven.setContext({
+      user: {
+        id: user._id,
+        username: user.name,
+        email: user.email
+      }
+    });
+  }
+
+  /** Ensures asynchronous exceptions are routed to the errorHandler.
+   * This should be the **first** item listed in middleware.
+   */
+  static requestHandler = Raven.requestHandler();
+  /** Error handler. This should be the last item listed in middleware,
+   * but before any other error handlers.
+   */
+  static errorHandler = Raven.errorHandler();
+
   private static captureMessage (level: string,
                                  message: string,
                                  params?: any,
@@ -33,14 +63,22 @@ export class Logger {
     params = _.cloneDeep(params) || {};
     params.env = process.env.NODE_ENV;
     if (req) {
-      params.ip = req && req.connection && req.connection.remoteAddress;
-      params.user = req && req.user && {
+      params.ip = req.connection && req.connection.remoteAddress;
+      params.user = req.user && {
           _id: req.user._id,
           email: req.user.email
         };
       params.endpoint = `${req.method} ${req.originalUrl}`;
       params.params = req.params;
       params.body = req.body;
+      Logger.setUser(req.user);
+    }
+    if (config.env === Environments.Production &&
+      _.includes(['warning', 'error', 'fatal'], level)) {
+      Raven.captureMessage(message, {
+        extra: params,
+        level: level
+      });
     }
 
     params = _.omitBy(params, _.isUndefined);
