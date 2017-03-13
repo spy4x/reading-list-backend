@@ -6,6 +6,7 @@
   "repository": "git@github.com:spy4x/reading-list-backend.git",
   "license": "MIT",
   "scripts": {
+    "start": "node build/index.js"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
