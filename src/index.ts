@@ -15,7 +15,7 @@ app
       setInterval(() => {
         Logger.log(
           'Send request to self to prevent Heroku free dyno from sleep', {});
-        http.get('https://reading-list-backend.herokuapp.com');
+        http.get('http://reading-list-backend.herokuapp.com');
       }, 25 * 60);
     }
   })
