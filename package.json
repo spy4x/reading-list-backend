@@ -6,7 +6,9 @@
   "repository": "git@github.com:spy4x/reading-list-backend.git",
   "license": "MIT",
   "scripts": {
-    "heroku-postbuild": "chmod 744 heroku.sh && ./heroku.sh"
+    "postinstall": "node node_modules/guppy-cli/bin/index pre-commit",
+    "heroku-postbuild": "node node_modules/gulp/bin/gulp generate-secrets",
+    "start": "node build/index.js"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
@@ -22,7 +24,6 @@
     "mongoose": "^4.7.6",
     "mongoose-unique-validator": "^1.0.3",
     "morgan": "^1.7.0",
-    "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "q": "^1.4.1",
@@ -52,6 +53,7 @@
     "gulp-watch": "^4.3.11",
     "guppy-cli": "^1.0.1",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "supertest": "^3.0.0",
     "tslint": "^4.4.2",
     "typescript": "~2.1.5"
