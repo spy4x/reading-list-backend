@@ -10,8 +10,8 @@ const tslint = require('gulp-tslint');
 const tsSrcPath = 'src/**/*.ts';
 const compiledTestsPath = 'build/**/*.spec.js';
 
-
-gulp.task('default', ['scripts'], runNodemonAndWatch);
+gulp.task('default', ['generate-secrets']);
+gulp.task('run', ['scripts'], runNodemonAndWatch);
 gulp.task('compile-typescript', runTSCompiler);
 gulp.task('scripts', ['compile-typescript']);
 gulp.task('generate-secrets', ['compile-typescript'], () => {
