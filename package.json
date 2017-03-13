@@ -6,8 +6,6 @@
   "repository": "git@github.com:spy4x/reading-list-backend.git",
   "license": "MIT",
   "scripts": {
-    "postinstall": "yarn global add gulp && gulp generate-secrets && cat build/config/secrets.json",
-    "start": "node build/index.js"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
