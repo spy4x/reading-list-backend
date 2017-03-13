@@ -6,6 +6,7 @@
   "repository": "git@github.com:spy4x/reading-list-backend.git",
   "license": "MIT",
   "scripts": {
+    "heroku-postbuild": "chmod 744 heroku.sh && ./heroku.sh"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
