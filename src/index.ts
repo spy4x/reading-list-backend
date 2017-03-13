@@ -16,7 +16,7 @@ app
         Logger.log(
           'Send request to self to prevent Heroku free dyno from sleep', {});
         http.get('http://reading-list-backend.herokuapp.com');
-      }, 25 * 60);
+      }, 25 * 60 * 1000);
     }
   })
   .catch((error: Error) => {
