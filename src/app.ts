@@ -40,7 +40,7 @@ export class App {
       }
 
       const server: http.Server = http.createServer(this.app);
-      server.listen(config.port, config.ip, () => {
+      server.listen(config.port, () => {
         defer.resolve();
       });
     });
