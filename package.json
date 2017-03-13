@@ -6,7 +6,6 @@
   "repository": "git@github.com:spy4x/reading-list-backend.git",
   "license": "MIT",
   "scripts": {
-    "postinstall": "./node_modules/guppy-cli/bin/index.js pre-commit"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
