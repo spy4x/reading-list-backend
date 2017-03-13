@@ -1,1 +1,1 @@
-web: chmod 744 heroku.sh && ./heroku.sh
+web: node build/index.js
