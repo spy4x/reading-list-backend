@@ -104,8 +104,7 @@ export class AuthGoogleStrategy implements AuthServiceStrategy {
         }),
         (req: Request, res: Response) => {
           const token = AuthService.genToken(req.user.getPublic());
-          res.cookie('token', token);
-          res.redirect(config.urls.frontend);
+          res.redirect(`${config.urls.frontend}/auth/token/${token}`);
         }
       );
   }

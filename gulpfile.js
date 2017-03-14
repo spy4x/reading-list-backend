@@ -96,7 +96,8 @@ function getTestsTaskBodyForValidation () {
       ui: 'bdd',
       timeout: mochaTimeout
     }))
-    .once('error', () => {
+    .once('error', (error) => {
+      console.error(error);
       process.exit(-1);
     })
     .once('end', () => {

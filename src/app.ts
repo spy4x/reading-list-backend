@@ -40,7 +40,7 @@ export class App {
       }
 
       const server: http.Server = http.createServer(this.app);
-      server.listen(config.port, config.ip, () => {
+      server.listen(config.port, () => {
         defer.resolve();
       });
     });
@@ -74,7 +74,11 @@ export class App {
       .use('/auth', AuthRouter)
       .use('/users', UserRouter)
       .use('/tags', TagRouter)
-      .use('/items', ItemRouter);
+      .use('/items', ItemRouter)
+      .use('/', express.Router().get('/',
+        (req: express.Request, res: express.Response) => {
+          return res.send('reading-list-backend works fine');
+        }));
   }
 
   private initMongoose () {
