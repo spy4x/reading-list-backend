@@ -4,6 +4,9 @@ import { User, UserModel } from '../../api/user/user.model';
 import { config } from '../../config/environment/index';
 import { Logger } from '../../services/logger.service';
 import { AuthService, Strategy as AuthServiceStrategy } from '../auth.service';
+/* tslint:disable:max-line-length */
+import { DefaultDataForNewUser } from '../../api/user/defaultDataForNewUser.service';
+/* tslint:enable:max-line-length */
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 export class AuthGoogleStrategy implements AuthServiceStrategy {
@@ -50,7 +53,10 @@ export class AuthGoogleStrategy implements AuthServiceStrategy {
             };
             return new UserModel(newUser)
               .save()
-              .then(savedUser => done(undefined, savedUser))
+              .then(savedUser => {
+                DefaultDataForNewUser.create(savedUser);
+                done(undefined, savedUser);
+              })
               .catch(error => {
                 const message = 'GooglePassport::callback - create user error';
                 Logger.error(message, {error});

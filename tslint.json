@@ -49,7 +49,7 @@
       "ignore-for-loop"
     ],
     "object-literal-sort-keys": false,
-    "ordered-imports": true,
+    "ordered-imports": false,
     "label-position": true,
     "linebreak-style": [
       true,
